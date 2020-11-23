@@ -1,0 +1,17 @@
+.contianer > .MuiFormControl-root > .MuiFormLabel-root {
+  right: 0;
+  left: auto;
+  direction: rtl;
+}
+
+.select-label {
+  right: 0;
+  margin-right: 20px;
+}
+
+.MuiGrid-root > .MuiButtonBase-root {
+  background-color: cornflowerblue;
+  display: flex;
+  flex-flow: row-reverse;
+  margin-top: 42px;
+}
