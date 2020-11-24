@@ -11,9 +11,9 @@ import {
 } from '@material-ui/core';
 import {
   getToday,
-  // nameValidation,
-  // IdValidation,
-  // phoneValidation,
+  nameValidation,
+  IdValidation,
+  phoneValidation,
   ageValidation,
 } from '../../components/Validation/validation';
 import { makeStyles } from '@material-ui/core/styles';

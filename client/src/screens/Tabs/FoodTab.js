@@ -1,56 +1,98 @@
-import React from 'react';
-import { List, ListItem, Checkbox, ListItemText } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState } from 'react';
+import './FoodsTab.css';
+import {
+  List,
+  ListItem,
+  Checkbox,
+  ListItemText,
+  TextField,
+  Button,
+  Grid,
+} from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
-
-const FoodTab = () => {
-  const classes = useStyles();
-  const [checked, setChecked] = React.useState([0]);
+const FoodTab = ({ foods, handleSubmit }) => {
+  const [checked, setChecked] = useState([]);
+  const [other, setOther] = useState('');
+  const [otherCheckbox, setOtherCheckbox] = useState(false);
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
-
     if (currentIndex === -1) {
       newChecked.push(value);
     } else {
       newChecked.splice(currentIndex, 1);
     }
-
+    foods[value].checked = !foods[value].checked;
     setChecked(newChecked);
   };
 
-  return (
-    <List className={classes.root}>
-      {[0, 1, 2, 3].map((value) => {
-        const labelId = `checkbox-list-label-${value}`;
+  const onSubmit = () => {
+    const chossenFood = foods
+      .filter((food) => food.checked === true)
+      .map((f) => f.name);
+    if (otherCheckbox) {
+      chossenFood.push(other);
+    }
 
+    handleSubmit(chossenFood);
+  };
+
+  return (
+    <List>
+      {foods.map((key, value) => {
+        const labelId = `checkbox-list-label-${key.name}`;
         return (
-          <ListItem
-            key={value}
-            role={undefined}
-            dense
-            button
-            onClick={handleToggle(value)}
-          >
+          <ListItem key={value} dense button onClick={handleToggle(value)}>
             <Checkbox
               edge='start'
               checked={checked.indexOf(value) !== -1}
-              tabIndex={-1}
+              // tabIndex={-1}
               disableRipple
               inputProps={{ 'aria-labelledby': labelId }}
             />
-            <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
+            <ListItemText
+              id={labelId}
+              primary={key.name}
+              style={{ display: 'flex', marginRight: 10 }}
+            />
           </ListItem>
         );
       })}
+      <ListItem
+        key={'אחר'}
+        dense
+        button
+        onClick={() => setOtherCheckbox((prev) => !prev)}
+      >
+        <Checkbox
+          edge='start'
+          checked={otherCheckbox}
+          disableRipple
+          inputProps={{ 'aria-labelledby': 'checkbox-list-label-other' }}
+        />
+        <ListItemText
+          primary='אחר'
+          style={{ display: 'flex', marginRight: 10 }}
+        />
+      </ListItem>
+      <Grid className='align-grid'>
+        {otherCheckbox && (
+          <TextField
+            id='other'
+            name='other'
+            label='אחר'
+            value={other}
+            onChange={(e) => setOther(e.target.value)}
+            className='text-align'
+          />
+        )}
+      </Grid>
+      <Grid className='align-grid'>
+        <Button onClick={onSubmit} className='align'>
+          סיום
+        </Button>
+      </Grid>
     </List>
   );
 };

@@ -5,6 +5,7 @@ export const saveUserdDetails = (res) => (dispatch) => {
     profile: res.profileObj,
     token: res.tokenObj,
   };
+  localStorage.setItem('user', user);
 
   dispatch({ type: AUTHENTICATE, user });
 };
