@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import './FoodsTab.css';
+import useStyles from './FoodsTabStyles';
+
 import {
   List,
   ListItem,
@@ -14,6 +15,7 @@ const FoodTab = ({ foods, handleSubmit }) => {
   const [checked, setChecked] = useState([]);
   const [other, setOther] = useState('');
   const [otherCheckbox, setOtherCheckbox] = useState(false);
+  const classes = useStyles();
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -75,7 +77,7 @@ const FoodTab = ({ foods, handleSubmit }) => {
           style={{ display: 'flex', marginRight: 10 }}
         />
       </ListItem>
-      <Grid className='align-grid'>
+      <Grid className={classes.alignGrid}>
         {otherCheckbox && (
           <TextField
             id='other'
@@ -83,14 +85,12 @@ const FoodTab = ({ foods, handleSubmit }) => {
             label='אחר'
             value={other}
             onChange={(e) => setOther(e.target.value)}
-            className='text-align'
+            className={classes.textAlign}
           />
         )}
       </Grid>
-      <Grid className='align-grid'>
-        <Button onClick={onSubmit} className='align'>
-          סיום
-        </Button>
+      <Grid className={classes.alignGrid}>
+        <Button onClick={onSubmit}>סיום</Button>
       </Grid>
     </List>
   );

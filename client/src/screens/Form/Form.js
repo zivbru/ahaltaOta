@@ -10,7 +10,7 @@ import {
   DialogContent,
   Button,
 } from '@material-ui/core';
-import './Form.css';
+import useStyles from './FormStyles';
 import TabPanel from '../../components/UI/Nav/TabPanel';
 import PersonalDetailsTab from '../Tabs/PersonalDetailsTab';
 import FoodTab from '../Tabs/FoodTab';
@@ -27,8 +27,7 @@ const Form = ({ auth }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [body, setBody] = useState('');
-
-  // console.log(auth.user.profile.googleId);
+  const classes = useStyles();
 
   const handleClose = () => {
     setOpen(false);
@@ -71,14 +70,14 @@ const Form = ({ auth }) => {
       setBody('!! המתשמש לא נוסף אנא נסה שנית מאוחר יותר');
       setLoading(false);
     }
-    // setValue(0);
+    setValue(0);
   };
   if (loading) {
     return <Spinner />;
   }
 
   return (
-    <div className='direction'>
+    <div className={classes.direction}>
       {open ? (
         <Dialog
           open={open}
@@ -105,7 +104,6 @@ const Form = ({ auth }) => {
               value={value}
               indicatorColor='primary'
               textColor='primary'
-              // onChange={handleChange}
               aria-label='disabled tabs example'
             >
               <Tab label='פרטים אישיים' />

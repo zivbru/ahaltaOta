@@ -1,30 +1,15 @@
 import React from 'react';
-import './AppNavBar.css';
 import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
 import EmojiEmotionsOutlinedIcon from '@material-ui/icons/EmojiEmotionsOutlined';
-import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginLeft: theme.spacing(1),
-    direction: 'rtl',
-  },
-  title: {
-    flexGrow: 1,
-    direction: 'ltr',
-  },
-}));
+import useStyles from './AppBarNavStyles';
 
 const AppBarNav = () => {
   const classes = useStyles();
   const user = useSelector((state) => state.auth.user);
 
   return (
-    <AppBar position='static' className='direction'>
+    <AppBar position='static' className={classes.direction}>
       <Toolbar>
         <IconButton
           edge='start'

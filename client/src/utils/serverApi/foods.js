@@ -6,5 +6,5 @@ export const getFoodsList = async () => {
 };
 
 export const saveData = async (userData) => {
-  const save = await api.post('/users', userData);
+  return await api.post('/users', userData);
 };

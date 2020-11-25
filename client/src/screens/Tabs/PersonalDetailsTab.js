@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import './PersonalDetailsTab.css';
+import useStyles from './PersonalDetailsStyles';
 import {
   TextField,
   InputLabel,
   Select,
   MenuItem,
-  FormControl,
   Grid,
   Button,
 } from '@material-ui/core';
@@ -22,6 +21,8 @@ import PropTypes from 'prop-types';
 const today = getDate(new Date());
 
 const PersonalDetailsTab = ({ nextTab, beers, user }) => {
+  const classes = useStyles();
+
   const initialState = {
     firstName: user && user.data ? user.data.firstname : '',
     lastName: user && user.data ? user.data.lastname : '',
@@ -80,7 +81,7 @@ const PersonalDetailsTab = ({ nextTab, beers, user }) => {
 
   return (
     <Grid container spacing={4}>
-      <Grid item xl={6} md={6} className='contianer'>
+      <Grid item xl={6} md={6} className={classes.contianer}>
         <TextField
           required
           id='firstName'
@@ -100,7 +101,7 @@ const PersonalDetailsTab = ({ nextTab, beers, user }) => {
           value={firstName}
         />
       </Grid>
-      <Grid item xs={6} sm={6} className='contianer'>
+      <Grid item xs={6} sm={6} className={classes.contianer}>
         <TextField
           required
           onFocus={() => handleTouch('lastName')}
@@ -121,7 +122,7 @@ const PersonalDetailsTab = ({ nextTab, beers, user }) => {
           value={lastName}
         />
       </Grid>
-      <Grid item xs={6} sm={6} className='contianer'>
+      <Grid item xs={6} sm={6} className={classes.contianer}>
         <TextField
           required
           type='date'
@@ -142,27 +143,29 @@ const PersonalDetailsTab = ({ nextTab, beers, user }) => {
         />
       </Grid>
       {birthDate !== '' && ageValidation(birthDate) >= 18 && (
-        <Grid item xs={6} sm={6} className='contianer'>
-          <FormControl>
-            <InputLabel id='demo-simple-select-label' className='select-label'>
-              הבירה המועדפת שלך?
-            </InputLabel>
-            <Select
-              labelId='demo-simple-select-label'
-              id='demo-simple-select'
-              name='beer'
-              onChange={(e) => onChange(e)}
-              value={beer}
-            >
-              {beers.map((beerOption) => (
-                <MenuItem value={beerOption.value}>{beerOption.key}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        <Grid item xs={6} sm={6} className={classes.contianer}>
+          <InputLabel
+            id='demo-simple-select-label'
+            className={classes.selectLabel}
+          >
+            הבירה המועדפת שלך?
+          </InputLabel>
+          <Select
+            fullWidth
+            labelId='demo-simple-select-label'
+            id='demo-simple-select'
+            name='beer'
+            onChange={(e) => onChange(e)}
+            value={beer}
+          >
+            {beers.map((beerOption) => (
+              <MenuItem value={beerOption.value}>{beerOption.key}</MenuItem>
+            ))}
+          </Select>
         </Grid>
       )}
       <Grid container spacing={4}>
-        <Grid item xs={6} sm={6} className='contianer'>
+        <Grid item xs={6} sm={6} className={classes.contianer}>
           <TextField
             required
             id='id'
@@ -180,7 +183,7 @@ const PersonalDetailsTab = ({ nextTab, beers, user }) => {
             value={Id}
           />
         </Grid>
-        <Grid item xs={6} sm={6} className='contianer'>
+        <Grid item xs={6} sm={6} className={classes.contianer}>
           <TextField
             id='phone'
             name='phone'
@@ -202,7 +205,7 @@ const PersonalDetailsTab = ({ nextTab, beers, user }) => {
       </Grid>
       <Grid container>
         <Button
-          className='btn'
+          className={classes.btn}
           disabled={isButtonDisdabled}
           onClick={handleSubmit}
         >
