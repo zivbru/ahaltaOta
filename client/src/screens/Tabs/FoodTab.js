@@ -47,7 +47,6 @@ const FoodTab = ({ foods, handleSubmit }) => {
             <Checkbox
               edge='start'
               checked={checked.indexOf(value) !== -1}
-              // tabIndex={-1}
               disableRipple
               inputProps={{ 'aria-labelledby': labelId }}
             />

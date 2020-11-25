@@ -10,10 +10,12 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   menuButton: {
-    marginLeft: theme.spacing(2),
+    marginLeft: theme.spacing(1),
+    direction: 'rtl',
   },
   title: {
     flexGrow: 1,
+    direction: 'ltr',
   },
 }));
 
@@ -22,26 +24,24 @@ const AppBarNav = () => {
   const user = useSelector((state) => state.auth.user);
 
   return (
-    <div className={classes.root}>
-      <AppBar position='static'>
-        <Toolbar>
-          {user && (
-            <Typography variant='h6' className={classes.title}>
-              היי {user.profile.name}
-            </Typography>
-          )}
-          <Typography variant='h6'>אכלת אותה</Typography>
-          <IconButton
-            edge='start'
-            className={classes.menuButton}
-            color='inherit'
-            aria-label='smile'
-          >
-            <EmojiEmotionsOutlinedIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-    </div>
+    <AppBar position='static' style={{ direction: 'rtl' }}>
+      <Toolbar>
+        <IconButton
+          edge='start'
+          className={classes.menuButton}
+          color='inherit'
+          aria-label='smile'
+        >
+          <EmojiEmotionsOutlinedIcon />
+        </IconButton>
+        <Typography variant='h6'>אכלת אותה</Typography>
+        {user && (
+          <Typography variant='h6' className={classes.title}>
+            היי {user.profile.name}
+          </Typography>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 };
 

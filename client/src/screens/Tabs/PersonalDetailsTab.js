@@ -16,7 +16,6 @@ import {
   phoneValidation,
   ageValidation,
 } from '../../components/Validation/validation';
-import { makeStyles } from '@material-ui/core/styles';
 
 const initialState = {
   firstName: '',
@@ -30,24 +29,51 @@ const initialState = {
 const today = getToday();
 
 const PersonalDetailsTab = ({ nextTab, beers }) => {
-  const useStyles = makeStyles((theme) => ({
-    formControl: {
-      width: '100%',
-    },
-  }));
-
-  const classes = useStyles();
-
   const [formData, setFormData] = useState(initialState);
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const { firstName, lastName, birthDate, beer, Id, phone } = formData;
 
   const handleSubmit = (e) => {
     nextTab(null, 1, formData);
   };
+  const [firstNameTouched, setFirstNameTouched] = useState(false);
+  const [lastNameTouched, setLastNameTouched] = useState(false);
+  const [idTouched, setIdTouched] = useState(false);
+  const [phoneTouched, setPhoneTouched] = useState(false);
+
+  const handleTouch = (label) => {
+    switch (label) {
+      case 'firstName':
+        setFirstNameTouched(true);
+        break;
+      case 'lastName':
+        setLastNameTouched(true);
+        break;
+      case 'id':
+        setIdTouched(true);
+        break;
+      case 'phone':
+        setPhoneTouched(true);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const isButtonDisdabled =
+    !nameValidation(firstName) ||
+    firstName === '' ||
+    !nameValidation(lastName) ||
+    lastName === '' ||
+    !IdValidation(Id) ||
+    Id === '' ||
+    birthDate === '' ||
+    !phoneValidation(phone) ||
+    phoneTouched === '';
 
   return (
     <Grid container spacing={4}>
@@ -57,7 +83,15 @@ const PersonalDetailsTab = ({ nextTab, beers }) => {
           id='firstName'
           name='firstName'
           label='שם פרטי'
-          //   error={isSubmitted && firstNameError}
+          onFocus={() => handleTouch('firstName')}
+          helperText={
+            firstNameTouched && (!nameValidation(firstName) || firstName === '')
+              ? 'שם פרטי חייב להיות בין 0 ל 50 תווים לפחות ורק מאותיות !'
+              : ''
+          }
+          error={
+            firstNameTouched && (!nameValidation(firstName) || firstName === '')
+          }
           fullWidth
           onChange={(e) => onChange(e)}
           value={firstName}
@@ -66,11 +100,19 @@ const PersonalDetailsTab = ({ nextTab, beers }) => {
       <Grid item xs={6} sm={6} className='contianer'>
         <TextField
           required
+          onFocus={() => handleTouch('lastName')}
+          helperText={
+            lastNameTouched && (!nameValidation(lastName) || lastName === '')
+              ? ' שם משפחה חייב להיות בין 0 ל 50 תווים לפחות ורק מאותיות!'
+              : ''
+          }
+          error={
+            lastNameTouched && (!nameValidation(lastName) || lastName === '')
+          }
           id='lastName'
           name='lastName'
           label='שם משפחה'
           autoComplete='family-name'
-          //   error={isSubmitted && lastNameError}
           fullWidth
           onChange={(e) => onChange(e)}
           value={lastName}
@@ -84,6 +126,10 @@ const PersonalDetailsTab = ({ nextTab, beers }) => {
           name='birthDate'
           fullWidth
           label='תאריך לידה'
+          helperText={
+            idTouched && birthDate === '' ? 'יש להכניס תאריך לידה' : ''
+          }
+          error={idTouched && birthDate === ''}
           InputLabelProps={{
             shrink: true,
           }}
@@ -94,7 +140,7 @@ const PersonalDetailsTab = ({ nextTab, beers }) => {
       </Grid>
       {birthDate !== '' && ageValidation(birthDate) >= 18 && (
         <Grid item xs={6} sm={6} className='contianer'>
-          <FormControl className={classes.formControl}>
+          <FormControl>
             <InputLabel id='demo-simple-select-label' className='select-label'>
               הבירה המועדפת שלך?
             </InputLabel>
@@ -105,7 +151,6 @@ const PersonalDetailsTab = ({ nextTab, beers }) => {
               onChange={(e) => onChange(e)}
               value={beer}
             >
-              {/* get it from the server */}
               {beers.map((beerOption) => (
                 <MenuItem value={beerOption.value}>{beerOption.key}</MenuItem>
               ))}
@@ -119,7 +164,13 @@ const PersonalDetailsTab = ({ nextTab, beers }) => {
             required
             id='id'
             name='Id'
-            // error={isSubmitted && IdError}
+            onFocus={() => handleTouch('id')}
+            helperText={
+              idTouched && (!IdValidation(Id) || Id === '')
+                ? 'יש להכניס תעודת זהות תקינה!'
+                : ''
+            }
+            error={idTouched && (!IdValidation(Id) || Id === '')}
             label='תעודת זהות'
             fullWidth
             onChange={(e) => onChange(e)}
@@ -131,7 +182,15 @@ const PersonalDetailsTab = ({ nextTab, beers }) => {
             id='phone'
             name='phone'
             label='טלפון'
-            // error={isSubmitted && phoneError}
+            onFocus={() => handleTouch('phone')}
+            helperText={
+              phoneTouched && (!phoneValidation(phone) || phoneTouched === '')
+                ? 'יש להכניס מספר טלפון תקין!'
+                : ''
+            }
+            error={
+              phoneTouched && (!phoneValidation(phone) || phoneTouched === '')
+            }
             fullWidth
             onChange={(e) => onChange(e)}
             value={phone}
@@ -139,8 +198,11 @@ const PersonalDetailsTab = ({ nextTab, beers }) => {
         </Grid>
       </Grid>
       <Grid container>
-        {/* disabled={btnDisabled} */}
-        <Button className='btn' onClick={handleSubmit}>
+        <Button
+          className='btn'
+          disabled={isButtonDisdabled}
+          onClick={handleSubmit}
+        >
           המשך
         </Button>
       </Grid>

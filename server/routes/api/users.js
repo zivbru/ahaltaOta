@@ -3,7 +3,6 @@ const router = express.Router();
 const { client } = require('../../config/db');
 
 router.post('/', [], async (req, res) => {
-  console.log('req.body', req.body);
   const { firstName, lastName, birthDate, beer, Id, phone, foods } = req.body;
   try {
     await client.query(
@@ -18,26 +17,25 @@ router.post('/', [], async (req, res) => {
         beer,
         `{"foods": ${JSON.stringify(foods)} }`,
       ],
-      (err, result) => {
+      async (err, userResult) => {
         if (err) {
           console.log(err);
-          res.status(500).send(err);
+          return res.status(500).send(err);
         } else {
-          foods.map(async (food) => {
-            console.log(food);
-            await client.query(
+          await foods.map((food) => {
+            client.query(
               'insert into foods (name, userid) values ($1, $2)',
               [food, parseInt(Id)],
-              (err, result) => {
+              (err, foodResult) => {
                 if (err) {
                   console.log(err);
-                  res.status(500).send(err);
+                  return res.status(500).send(err);
                 } else {
-                  res.json('User added!');
                 }
               }
             );
           });
+          return res.json('User added succesfully!');
         }
       }
     );
@@ -45,8 +43,7 @@ router.post('/', [], async (req, res) => {
     console.log(error.message);
     res.status(500).send('Could not fetch foods from db');
   } finally {
-    // res.json('new food inserted');
-    // client.end();
+    // res.json('User added!');
   }
 });
 
