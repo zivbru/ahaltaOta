@@ -17,14 +17,18 @@ import FoodTab from '../Tabs/FoodTab';
 import { getAllBeers } from '../../utils/serverApi/beers';
 import { getFoodsList, saveData } from '../../utils/serverApi/foods';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-const Form = () => {
+const Form = ({ auth }) => {
   const [beersList, setBeersList] = useState([]);
   const [foodList, setFoodsList] = useState([]);
   const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [body, setBody] = useState('');
+
+  // console.log(auth.user.profile.googleId);
 
   const handleClose = () => {
     setOpen(false);
@@ -56,6 +60,7 @@ const Form = () => {
     try {
       setLoading(true);
       userData.foods = foods;
+      userData.googleId = auth.user.profile.googleId;
       await saveData(userData);
       setLoading(false);
       setBody('המשתמש נוסף בהצלחה');
@@ -66,7 +71,7 @@ const Form = () => {
       setBody('!! המתשמש לא נוסף אנא נסה שנית מאוחר יותר');
       setLoading(false);
     }
-    setValue(0);
+    // setValue(0);
   };
   if (loading) {
     return <Spinner />;
@@ -119,4 +124,12 @@ const Form = () => {
   );
 };
 
-export default Form;
+Form.propTypes = {
+  auth: PropTypes.object.isRequired,
+};
+
+const mapStateToProp = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProp, {})(Form);

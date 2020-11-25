@@ -2,30 +2,37 @@ const { client } = require('../config/db');
 
 const createUsersTableQuery = `
 CREATE TABLE users  (
-    userid VARCHAR(10) NOT NULL,
+    googleId VARCHAR(50) NOT NULL,
     firstName VARCHAR (50) NOT NULL,
     lastName  VARCHAR (50)  NOT NULL,
     birthdate DATE  NOT NULL,
     phone VARCHAR (10) NOT NULL,
     favoritebeer VARCHAR(20),
-    foods jsonb NOT NULL,
-	PRIMARY KEY( userid )
+    israelId VARCHAR(10) NOT NULL,
+	PRIMARY KEY( googleId )
 );
 `;
 
 const createFoodsTableQuery = `
 CREATE TABLE foods  (
-    foodid SERIAL ,
+    foodid SERIAL,
     name VARCHAR(50) NOT NULL,
-    userid VARCHAR(10) REFERENCES users(userid),
 	PRIMARY KEY (foodid)
 );
 `;
+
+const createUsersFoodsTableQuery = `
+CREATE TABLE usersfoods  (
+    userid VARCHAR(50) REFERENCES users(googleid),
+    foodid integer REFERENCES foods(foodid)
+);
+`;
+
 const insertFoodsTableQuery = `
-'insert into foods (name, userid) values ($1, $2)',
+'insert into foods (name) values ("פיצה")',
 `;
 
 const insertusersTableQuery = `
-insert into  users (userid, firstname , lastname, birthdate, phone, favoritebeer,foods) 
-values (3, 'ziv3', 'bru3', '2020-12-11','058589985',  'heiniken', '{ "foods":["המבורגר,עוף" ] }'  )
+insert into users (googleId, firstname , lastname, birthdate, phone,israelId,favoritebeer) 
+			values ('1', 'ziv','bru', '2020-12-11', '0528555929', '039356689', 'גולדסטאר' )
 `;

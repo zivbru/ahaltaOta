@@ -1,12 +1,12 @@
 import React from 'react';
 import { GoogleLogin } from 'react-google-login';
 import './Login.css';
-import { saveUserdDetails } from '../../store/actions/auth';
+import { saveUserDetails } from '../../store/actions/auth';
 import { connect } from 'react-redux';
 
-const Login = ({ saveUserdDetails }) => {
+const Login = ({ saveUserDetails }) => {
   const responseGoogle = async (res) => {
-    await saveUserdDetails(res);
+    await saveUserDetails(res);
   };
   const onFail = (res) => {
     return;
@@ -18,11 +18,11 @@ const Login = ({ saveUserdDetails }) => {
         buttonText='Sign in with Google'
         onSuccess={responseGoogle}
         onFailure={onFail}
-        // isSignedIn={true}
+        isSignedIn={true}
         cookiePolicy={'single_host_origin'}
       />
     </div>
   );
 };
 
-export default connect(null, { saveUserdDetails })(Login);
+export default connect(null, { saveUserDetails })(Login);

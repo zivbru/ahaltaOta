@@ -10,25 +10,27 @@ import {
   Button,
 } from '@material-ui/core';
 import {
-  getToday,
+  getDate,
   nameValidation,
   IdValidation,
   phoneValidation,
   ageValidation,
 } from '../../components/Validation/validation';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-const initialState = {
-  firstName: '',
-  lastName: '',
-  birthDate: '',
-  beer: '',
-  Id: '',
-  phone: '',
-};
+const today = getDate(new Date());
 
-const today = getToday();
+const PersonalDetailsTab = ({ nextTab, beers, user }) => {
+  const initialState = {
+    firstName: user && user.data ? user.data.firstname : '',
+    lastName: user && user.data ? user.data.lastname : '',
+    birthDate: user && user.data ? getDate(user.data.birthdate) : '',
+    beer: user && user.data ? user.data.favoritebeer : '',
+    Id: user && user.data ? user.data.israelid : '',
+    phone: user && user.data ? user.data.phone : '',
+  };
 
-const PersonalDetailsTab = ({ nextTab, beers }) => {
   const [formData, setFormData] = useState(initialState);
 
   const onChange = (e) => {
@@ -65,15 +67,16 @@ const PersonalDetailsTab = ({ nextTab, beers }) => {
   };
 
   const isButtonDisdabled =
-    !nameValidation(firstName) ||
-    firstName === '' ||
-    !nameValidation(lastName) ||
-    lastName === '' ||
-    !IdValidation(Id) ||
-    Id === '' ||
-    birthDate === '' ||
-    !phoneValidation(phone) ||
-    phoneTouched === '';
+    (!nameValidation(firstName) ||
+      firstName === '' ||
+      !nameValidation(lastName) ||
+      lastName === '' ||
+      !IdValidation(Id) ||
+      Id === '' ||
+      birthDate === '' ||
+      !phoneValidation(phone) ||
+      phoneTouched === '') &&
+    !user;
 
   return (
     <Grid container spacing={4}>
@@ -210,4 +213,12 @@ const PersonalDetailsTab = ({ nextTab, beers }) => {
   );
 };
 
-export default PersonalDetailsTab;
+PersonalDetailsTab.propTypes = {
+  user: PropTypes.object.isRequired,
+};
+
+const mapStateToProp = (state) => ({
+  user: state.auth.user,
+});
+
+export default connect(mapStateToProp, {})(PersonalDetailsTab);
