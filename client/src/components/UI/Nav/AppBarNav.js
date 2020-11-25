@@ -24,7 +24,7 @@ const AppBarNav = () => {
   const user = useSelector((state) => state.auth.user);
 
   return (
-    <AppBar position='static' style={{ direction: 'rtl' }}>
+    <AppBar position='static' className='direction'>
       <Toolbar>
         <IconButton
           edge='start'

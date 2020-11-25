@@ -61,11 +61,12 @@ const Form = () => {
       setBody('המשתמש נוסף בהצלחה');
       setOpen(true);
     } catch (error) {
-      console.log(error);
+      console.log('error', error.response.data.message);
       setOpen(true);
       setBody('!! המתשמש לא נוסף אנא נסה שנית מאוחר יותר');
       setLoading(false);
     }
+    setValue(0);
   };
   if (loading) {
     return <Spinner />;

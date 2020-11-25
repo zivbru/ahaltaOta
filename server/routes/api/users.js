@@ -19,8 +19,8 @@ router.post('/', [], async (req, res) => {
       ],
       async (err, userResult) => {
         if (err) {
-          console.log(err);
-          return res.status(500).send(err);
+          console.log('err', err);
+          return res.status(500).send({ message: err.detail });
         } else {
           await foods.map((food) => {
             client.query(
@@ -28,8 +28,8 @@ router.post('/', [], async (req, res) => {
               [food, parseInt(Id)],
               (err, foodResult) => {
                 if (err) {
-                  console.log(err);
-                  return res.status(500).send(err);
+                  console.log('err1', err);
+                  return res.status(500).send(err.detail);
                 } else {
                 }
               }
@@ -40,10 +40,8 @@ router.post('/', [], async (req, res) => {
       }
     );
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send('Could not fetch foods from db');
-  } finally {
-    // res.json('User added!');
+    console.log('error.message', error.message);
+    res.status(500).send(error.message);
   }
 });
 
