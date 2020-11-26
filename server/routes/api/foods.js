@@ -4,7 +4,7 @@ const { client } = require('../../config/db');
 
 router.get('/', [], async (req, res) => {
   try {
-    const getAllFoodsNameQuery = `SELECT DISTINCT name FROM foods`;
+    const getAllFoodsNameQuery = `SELECT DISTINCT name, foodid FROM foods`;
     const result = await client.query(getAllFoodsNameQuery);
     res.json(result.rows);
   } catch (error) {

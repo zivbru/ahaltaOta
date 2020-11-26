@@ -14,10 +14,11 @@ CREATE TABLE users  (
 `;
 
 const createFoodsTableQuery = `
-CREATE TABLE foods  (
-    foodid SERIAL,
-    name VARCHAR(50) NOT NULL,
-	PRIMARY KEY (foodid)
+CREATE TABLE usersfoods  (
+	id SERIAL,
+    userid VARCHAR(50) REFERENCES users(googleid),
+    fkfoodid integer REFERENCES foods(foodid),
+	PRIMARY KEY (id)
 );
 `;
 

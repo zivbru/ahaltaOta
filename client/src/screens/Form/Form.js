@@ -20,11 +20,13 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const Form = ({ auth }) => {
+const Form = ({ user }) => {
+  const [initialState, setInitialState] = useState([]);
   const [beersList, setBeersList] = useState([]);
   const [foodList, setFoodsList] = useState([]);
   const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
   const [body, setBody] = useState('');
   const classes = useStyles();
@@ -48,8 +50,6 @@ const Form = ({ auth }) => {
     getFoods();
   }, []);
 
-  const [value, setValue] = useState(0);
-
   const handleChange = (event, newValue, userData) => {
     setValue(newValue);
     setUserData(userData);
@@ -59,7 +59,6 @@ const Form = ({ auth }) => {
     try {
       setLoading(true);
       userData.foods = foods;
-      userData.googleId = auth.user.profile.googleId;
       await saveData(userData);
       setLoading(false);
       setBody('המשתמש נוסף בהצלחה');
@@ -72,6 +71,24 @@ const Form = ({ auth }) => {
     }
     setValue(0);
   };
+  useEffect(() => {
+    const userFoods = ((user || {}).data || {}).foods;
+    setInitialState(
+      foodList
+        .map((key, value) => {
+          const isExists =
+            userFoods &&
+            userFoods.find((userfood) => userfood.foodid === key.foodid);
+          if (isExists) {
+            foodList[value].checked = true;
+            return value;
+          }
+          return false;
+        })
+        .filter((e) => e === 0 || e)
+    );
+  }, [((user || {}).data || {}).foods, foodList]);
+
   if (loading) {
     return <Spinner />;
   }
@@ -114,7 +131,11 @@ const Form = ({ auth }) => {
             <PersonalDetailsTab nextTab={handleChange} beers={beersList} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <FoodTab foods={foodList} handleSubmit={handleSubmit} />
+            <FoodTab
+              foods={foodList}
+              initialState={initialState}
+              handleSubmit={handleSubmit}
+            />
           </TabPanel>
         </div>
       )}
@@ -123,11 +144,11 @@ const Form = ({ auth }) => {
 };
 
 Form.propTypes = {
-  auth: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 const mapStateToProp = (state) => ({
-  auth: state.auth,
+  user: state.auth.user,
 });
 
 export default connect(mapStateToProp, {})(Form);

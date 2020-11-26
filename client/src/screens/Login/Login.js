@@ -19,7 +19,7 @@ const Login = ({ saveUserDetails }) => {
         buttonText='Sign in with Google'
         onSuccess={responseGoogle}
         onFailure={onFail}
-        isSignedIn={true}
+        // isSignedIn={true}
         cookiePolicy={'single_host_origin'}
       />
     </div>

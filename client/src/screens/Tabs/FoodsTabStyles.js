@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
   alignGrid: {
     marginRight: '28px',
   },
-  'container > .MuiButtonBase-root': {
+  '.container > .MuiButtonBase-root': {
     backgroundColor: 'cornflowerblue',
     marginTop: '70px',
   },

@@ -11,8 +11,8 @@ import {
   Grid,
 } from '@material-ui/core';
 
-const FoodTab = ({ foods, handleSubmit }) => {
-  const [checked, setChecked] = useState([]);
+const FoodTab = ({ foods, handleSubmit, initialState }) => {
+  const [checked, setChecked] = useState(initialState);
   const [other, setOther] = useState('');
   const [otherCheckbox, setOtherCheckbox] = useState(false);
   const classes = useStyles();
@@ -30,9 +30,7 @@ const FoodTab = ({ foods, handleSubmit }) => {
   };
 
   const onSubmit = () => {
-    const chossenFood = foods
-      .filter((food) => food.checked === true)
-      .map((f) => f.name);
+    const chossenFood = foods.filter((food) => food.checked === true);
     if (otherCheckbox) {
       chossenFood.push(other);
     }

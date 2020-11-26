@@ -41,6 +41,9 @@ const PersonalDetailsTab = ({ nextTab, beers, user }) => {
   const { firstName, lastName, birthDate, beer, Id, phone } = formData;
 
   const handleSubmit = (e) => {
+    if (user && getDate(((user || {}).data || {}).birthdate) === birthDate) {
+      setFormData({ ...formData, birthDate: user.data.birthdate });
+    }
     nextTab(null, 1, formData);
   };
   const [firstNameTouched, setFirstNameTouched] = useState(false);

@@ -5,7 +5,6 @@ const useStyles = makeStyles(() => ({
     '.MuiFormControl-root > .MuiFormLabel-root': {
       right: 0,
       left: 'auto',
-      direction: 'rtl',
     },
     '.MuiGrid-root > .MuiButtonBase-root': {
       backgroundColor: 'cornflowerblue',
