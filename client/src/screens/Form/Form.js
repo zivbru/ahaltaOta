@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Paper,
   Tabs,
@@ -19,6 +19,7 @@ import { getFoodsList, saveData } from '../../utils/serverApi/foods';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { getUserById } from '../../store/actions/auth';
 
 const Form = ({ user }) => {
   const [initialState, setInitialState] = useState([]);
@@ -45,10 +46,22 @@ const Form = ({ user }) => {
     setFoodsList(foods);
   };
 
+  // const getUserData = useCallback(async () => {
+  //   const userFromServer = await getUserById(user.profile.googleId);
+  //   if (userFromServer) {
+  //     user.data = userFromServer.data;
+  //     console.log(user.data);
+  //   }
+  // }, [user]);
+
   useEffect(() => {
     getBeers();
     getFoods();
   }, []);
+
+  // useEffect(() => {
+  //   getUserData();
+  // }, [getUserData]);
 
   const handleChange = (event, newValue, userData) => {
     setValue(newValue);
@@ -87,7 +100,7 @@ const Form = ({ user }) => {
         })
         .filter((e) => e === 0 || e)
     );
-  }, [((user || {}).data || {}).foods, foodList]);
+  }, [user, foodList]);
 
   if (loading) {
     return <Spinner />;
